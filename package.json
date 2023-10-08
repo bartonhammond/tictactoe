@@ -1,0 +1,13 @@
+{
+  "name": "enhance-tictactoe",
+  "version": "1.0.0",
+  "description": "A simple example of using htmx.org with enhance.dev",
+  "scripts": {
+    "start": "enhance dev"
+  },
+  "dependencies": {
+    "@enhance/arc-plugin-enhance": "^6.2.1",
+    "@enhance/cli": "^1.0.3",
+    "htmx.org": "^1.9.6"
+  }
+}
