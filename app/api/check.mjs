@@ -1,3 +1,5 @@
+import getCache from "../lib/cache.mjs";
+import fs from "fs";
 function isWinner(game) {
     const wins = [
         [0, 1, 2],
@@ -15,6 +17,7 @@ function isWinner(game) {
         const a = game[win[0]];
         const b = game[win[1]];
         const c = game[win[2]];
+
         if (a === '' || b === '' || c === '') {
             continue;
         }
@@ -25,25 +28,38 @@ function isWinner(game) {
     return false;
 }
 export async function get(req) {
-    let game = req.session.game;
+    let games = JSON.parse(fs.readFileSync("data.json"))
 
-    let winner = isWinner(game)
-    let full = !game.includes('');
-
+    let id = req.query.id;
     let message = "Tic Tac Toe";
+
+    if (!games.hasOwnProperty(id)) {
+        return {
+            headers: {
+                'cache-control': getCache(),
+            },
+            text: message
+        }
+    }
+    let gameObj = games[id]
+
+    let winner = isWinner(gameObj.game)
+    let full = !gameObj.game.includes('');
+
     let button = '<button onclick="location.reload()">Again?</button>'
+
     if (winner) {
-        let player = req.session.player === 'X' ? "O" : "X";
+        let player = gameObj.player === 'X' ? "O" : "X";
         message = `Winner ${player} ${button}`
     } else if (full) {
         message = `Game over ${button}`;
     }
+
     return {
-        session: {
-            game: game,
-            player: req.session.player,
-            done: winner
+        headers: {
+            'cache-control': getCache(),
         },
         text: message
     }
+
 }

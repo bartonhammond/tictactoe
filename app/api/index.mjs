@@ -1,11 +1,6 @@
+import getCache from "../lib/cache.mjs"
 export async function get(req) {
-    let game = ["", "", "", "", "", "", "", "", ""]
-    let player = "X"
-    return {
-        session: {
-            game: game,
-            player: player,
-            done: false,
-        }
+    if (!fs.existsSync("data.json")) {
+        fs.writeFileSync("data.json", "{}")
     }
 }

@@ -5,9 +5,11 @@
   "scripts": {
     "start": "enhance dev"
   },
+  "devDependencies": {
+    "@enhance/cli": "^1.0.3"
+  },
   "dependencies": {
     "@enhance/arc-plugin-enhance": "^6.2.1",
-    "@enhance/cli": "^1.0.3",
     "htmx.org": "^1.9.6"
   }
 }

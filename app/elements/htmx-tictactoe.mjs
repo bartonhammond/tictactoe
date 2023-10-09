@@ -1,4 +1,4 @@
-export default function HtmxTicTacToe({ html }) {
+export default function HtmxTicTacToe({ html, state }) {
   return html`
     <style>
       h1 {
@@ -23,23 +23,24 @@ export default function HtmxTicTacToe({ html }) {
         border-bottom: 2px solid black;
       }
     </style>
-    <h1 hx-get="/check" hx-trigger="click delay:0.5s from:td">Tic Tac Toe</h1>
+    <h1 hx-get="/check?id=${state.instanceID}" hx-trigger="click delay:0.5s from:td">Tic Tac Toe</h1>
     <table>
       <tr>
-        <td hx-post="/clicked?pos=0" hx-trigger="click"></td>
-        <td hx-post="/clicked?pos=1" hx-trigger="click" class="vert"></td>
-        <td hx-post="/clicked?pos=2" hx-trigger="click"></td>
+        <td hx-post="/clicked?pos=0&id=${state.instanceID}" hx-trigger="click"></td>
+        <td hx-post="/clicked?pos=1&id=${state.instanceID}" hx-trigger="click" class="vert"></td>
+        <td hx-post="/clicked?pos=2&id=${state.instanceID}" hx-trigger="click"></td>
       </tr>
       <tr>
-        <td hx-post="/clicked?pos=3" hx-trigger="click" class="hori"></td>
-        <td hx-post="/clicked?pos=4" hx-trigger="click" class="vert hori"></td>
-        <td hx-post="/clicked?pos=5" hx-trigger="click" class="hori"></td>
+        <td hx-post="/clicked?pos=3&id=${state.instanceID}" hx-trigger="click" class="hori"></td>
+        <td hx-post="/clicked?pos=4&id=${state.instanceID}" hx-trigger="click" class="vert hori"></td>
+        <td hx-post="/clicked?pos=5&id=${state.instanceID}" hx-trigger="click" class="hori"></td>
       </tr>
       <tr>
-        <td hx-post="/clicked?pos=6" hx-trigger="click"></td>
-        <td hx-post="/clicked?pos=7" hx-trigger="click" class="vert"></td>
-        <td hx-post="/clicked?pos=8" hx-trigger="click"></td>
+        <td hx-post="/clicked?pos=6&id=${state.instanceID}" hx-trigger="click"></td>
+        <td hx-post="/clicked?pos=7&id=${state.instanceID}" hx-trigger="click" class="vert"></td>
+        <td hx-post="/clicked?pos=8&id=${state.instanceID}" hx-trigger="click"></td>
       </tr>
     </table>
+    <pre>${JSON.stringify(state, null, 2)}</pre>
   `;
 }
