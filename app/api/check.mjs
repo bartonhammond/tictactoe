@@ -1,5 +1,5 @@
 import getCache from "../lib/cache.mjs";
-import fs from "fs";
+import data from '@begin/data';
 function isWinner(game) {
     const wins = [
         [0, 1, 2],
@@ -28,21 +28,12 @@ function isWinner(game) {
     return false;
 }
 export async function get(req) {
-    let games = JSON.parse(fs.readFileSync("data.json"))
+    let gameObj = await data.get({
+        table: 'games',
+        key: req.query.id
+    });
 
-    let id = req.query.id;
     let message = "Tic Tac Toe";
-
-    if (!games.hasOwnProperty(id)) {
-        return {
-            headers: {
-                'cache-control': getCache(),
-            },
-            text: message
-        }
-    }
-    let gameObj = games[id]
-
     let winner = isWinner(gameObj.game)
     let full = !gameObj.game.includes('');
 
@@ -54,12 +45,19 @@ export async function get(req) {
     } else if (full) {
         message = `Game over ${button}`;
     }
-
+    if (winner || full) {
+        await data.set({
+            table: 'games',
+            key: req.query.id,
+            game: gameObj.game,
+            player: gameObj.player,
+            done: true
+        })
+    }
     return {
         headers: {
             'cache-control': getCache(),
         },
         text: message
     }
-
 }

@@ -1,18 +1,17 @@
 import getCache from "../lib/cache.mjs";
-import fs from "fs";
-export async function post(req) {
-  let games = JSON.parse(fs.readFileSync("data.json"));
-  let id = req.query.id;
+import data from '@begin/data';
 
-  let gameObj;
-  if (games.hasOwnProperty(id)) {
-    gameObj = games[id]
-  } else {
+export async function post(req) {
+  let gameObj = await data.get({
+    table: 'games',
+    key: req.query.id
+  });
+
+  if (!gameObj) {
     gameObj = {};
     gameObj.game = ["", "", "", "", "", "", "", "", ""]
     gameObj.player = "X"
     gameObj.done = false;
-    games[id] = gameObj;
   }
 
   let pos = parseInt(req.query.pos);
@@ -22,7 +21,15 @@ export async function post(req) {
     gameObj.game[pos] = gameObj.player;
     gameObj.player = gameObj.player === "X" ? "O" : "X";
   }
-  fs.writeFileSync("data.json", JSON.stringify(games))
+
+  await data.set({
+    table: 'games',
+    key: req.query.id,
+    game: gameObj.game,
+    player: gameObj.player,
+    done: gameObj.done
+  })
+
   return {
     headers: {
       'cache-control': getCache(),
