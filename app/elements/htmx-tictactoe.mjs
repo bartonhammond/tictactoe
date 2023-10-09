@@ -41,6 +41,5 @@ export default function HtmxTicTacToe({ html, state }) {
         <td hx-post="/clicked?pos=8&id=${state.instanceID}" hx-trigger="click"></td>
       </tr>
     </table>
-    <pre>${JSON.stringify(state, null, 2)}</pre>
   `;
 }
