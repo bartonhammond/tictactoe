@@ -12,6 +12,10 @@ npm install
 
 npm start
 
+### Deploy
+
+begin deploy
+
 #### Example
 
  [https://music-2ep.begin.app/](https://music-2ep.begin.app/)
