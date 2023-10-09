@@ -23,9 +23,11 @@ export default function HtmxTicTacToe({ html, state }) {
         border-bottom: 2px solid black;
       }
     </style>
+    <!-- when a TD is updated, wait .5s and do check passing the id -->
     <h1 hx-get="/check?id=${state.instanceID}" hx-trigger="click delay:0.5s from:td">Tic Tac Toe</h1>
     <table>
       <tr>
+        <!-- Each TD, when clicked, passes 2 query strings, the position and the instanceId -->
         <td hx-post="/clicked?pos=0&id=${state.instanceID}" hx-trigger="click"></td>
         <td hx-post="/clicked?pos=1&id=${state.instanceID}" hx-trigger="click" class="vert"></td>
         <td hx-post="/clicked?pos=2&id=${state.instanceID}" hx-trigger="click"></td>

@@ -2,11 +2,13 @@ import getCache from "../lib/cache.mjs";
 import data from '@begin/data';
 
 export async function post(req) {
+  //Get existing game
   let gameObj = await data.get({
     table: 'games',
     key: req.query.id
   });
 
+  //Initialize the game
   if (!gameObj) {
     gameObj = {};
     gameObj.game = ["", "", "", "", "", "", "", "", ""]
@@ -14,6 +16,7 @@ export async function post(req) {
     gameObj.done = false;
   }
 
+  //POS is the position passed by the htmx element in the POST
   let pos = parseInt(req.query.pos);
 
   //Don't allow changes if game is over
@@ -22,6 +25,7 @@ export async function post(req) {
     gameObj.player = gameObj.player === "X" ? "O" : "X";
   }
 
+  //save results
   await data.set({
     table: 'games',
     key: req.query.id,
@@ -30,6 +34,7 @@ export async function post(req) {
     done: gameObj.done
   })
 
+  //The move is returned
   return {
     headers: {
       'cache-control': getCache(),
